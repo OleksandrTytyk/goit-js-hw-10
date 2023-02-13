@@ -1,4 +1,4 @@
-import refs from "./refs";
+// import refs from "refs";
 
 export function renderCountryInfo(data) {
   const markup = data
