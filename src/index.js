@@ -5,7 +5,7 @@ import fetchCountries from './js/fetchCountries';
 // import refs from './js/refs';
 import { renderCountryInfo, renderCountryList, clear } from './js/renderMarkup';
 
-refs = {
+const refs = {
   input: document.querySelector('#search-box'),
   countryList: document.querySelector('.country-list'),
   countryInfo: document.querySelector('.country-info'),
