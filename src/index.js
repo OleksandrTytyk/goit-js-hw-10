@@ -2,18 +2,17 @@ import './css/styles.css';
 import debounce from 'lodash.debounce';
 import Notiflix from 'notiflix';
 import fetchCountries from './js/fetchCountries';
-// import refs from './js/refs';
-import { renderCountryInfo, renderCountryList, clear } from './js/renderMarkup';
-
-const refs = {
-  input: document.querySelector('#search-box'),
-  countryList: document.querySelector('.country-list'),
-  countryInfo: document.querySelector('.country-info'),
-};
+// import { refs } from './js/refs';
+// import { renderCountryInfo, renderCountryList, clear } from './js/renderMarkup';
 
 const DEBOUNCE_DELAY = 300;
 
-refs.input.addEventListener('input', debounce(onSearchCountry, DEBOUNCE_DELAY));
+const input = document.getElementById('search-box');
+const countryList = document.querySelector('.country-list');
+const countryInfo = document.querySelector('.country-info');
+
+
+input.addEventListener('input', debounce(onSearchCountry, DEBOUNCE_DELAY));
 
 function onSearchCountry(e) {
   e.preventDefault();
@@ -39,4 +38,45 @@ function onSearchCountry(e) {
       renderCountryInfo(data);
     }
   }
+}
+
+function renderCountryInfo(data) {
+  const markup = data
+    .map(({ name, capital, population, flags, languages }) => {
+      const nameLanguages = languages.map(language => language.name);
+      return `
+  <img class="countryFlag-info" src="${
+    flags.svg
+  }" alt="flag" width="200px" height="125px">
+  <h2 class="countryName-info">${name}</h2>
+  <div class="countryTitleInfo">
+    <p><b>Capital:</b> ${capital}</p>
+    <p><b>Population:</b> ${population}</p>
+    <p><b>Languages:</b> ${nameLanguages.join(', ')}</p>
+  </div>`;
+    })
+    .join('');
+  clear();
+
+  countryInfo.innerHTML = markup;
+}
+
+function renderCountryList(data) {
+  const markup = data
+    .map(({ name, flags }) => {
+      return `
+      <div class="countryListMarkup">
+  <img class="countryFlag-list" src="${flags.svg}" alt="flag" width="50px" height="30px">
+  <h2 class="countryName-list">${name}</h2>
+  </div>`;
+    })
+    .join('');
+  clear();
+
+  countryList.innerHTML = markup;
+}
+
+function clear() {
+  countryList.innerHTML = '';
+  countryInfo.innerHTML = '';
 }
